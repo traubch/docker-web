@@ -1,0 +1,27 @@
+custom:
+  image: php:5.6-apache
+  links:
+    - mysql_db:mysql
+  ports:
+    - 8080:80
+  volumes:
+    - ~/web/hostdata/custom/src:/var/www/html
+mysql_data:
+  image: arungupta/mysql-data-container
+  volumes:
+    - ~/web/hostdata/custom/dbdata:/var/lib/mysql
+mysql_db:
+  image: mariadb
+  environment:
+    MYSQL_ROOT_PASSWORD: 1234
+  volumes_from:
+    - mysql_data
+phpmyadmin:
+  image: corbinu/docker-phpmyadmin
+  links:
+    - mysql_db:mysql
+  ports:
+    - 8181:80
+  environment:
+    MYSQL_USERNAME: root
+    MYSQL_ROOT_PASSWORD: 1234
